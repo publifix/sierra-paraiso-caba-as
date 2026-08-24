@@ -643,6 +643,10 @@ body.menu-open { overflow: hidden; }
   background: linear-gradient(180deg, rgba(var(--verde-sierra-rgb), 0.82), rgba(var(--verde-sierra-rgb), 0.92));
 }
 .amenidades > .container { position: relative; z-index: 1; }
+/* Headings default to carbon-noche (near-black) for the light sections —
+   must be overridden explicitly here or "Todo lo necesario..." renders
+   almost invisible on this dark green background. */
+.amenidades h2 { color: var(--crema-neblina); }
 
 .amenity-grid {
   display: grid;
