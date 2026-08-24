@@ -418,70 +418,45 @@ body.menu-open { overflow: hidden; }
    ========================================================= */
 .hero {
   position: relative;
-  min-height: 100svh;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
   color: var(--crema-neblina);
+  background: var(--verde-sierra);
+  padding-top: calc(var(--header-h) + clamp(2rem, 6vh, 3.5rem));
+  padding-bottom: clamp(2.5rem, 7vh, 4rem);
+  overflow: hidden;
 }
-.hero-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 6vw, 3.5rem);
+  align-items: center;
 }
-.hero-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 62%;
-  transform: scale(1.08);
-  will-change: transform;
-}
-@media (max-width: 767px) {
-  /* The mobile crop is pool-left / cabins-right; bias toward the pool
-     instead of the centered crop the wide desktop photo needs. */
-  .hero-media img { object-position: 22% center; }
-}
-.hero-scrim {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg,
-    rgba(15, 20, 14, 0.52) 0%,
-    rgba(15, 20, 14, 0.24) 28%,
-    rgba(15, 20, 14, 0.5) 52%,
-    rgba(15, 20, 14, 0.94) 100%);
-}
-.hero-content {
-  position: relative;
-  z-index: 1;
-  padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
-  padding-top: calc(var(--header-h) + 2rem);
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: clamp(3rem, 6vw, 5rem); }
 }
 .hero-sub {
-  max-width: 52ch;
+  max-width: 48ch;
   font-size: clamp(1.02rem, 1.6vw, 1.2rem);
-  color: rgba(var(--crema-neblina-rgb), 0.92);
+  color: rgba(var(--crema-neblina-rgb), 0.85);
   margin-top: 1.1rem;
-  text-shadow: 0 1px 3px rgba(15, 20, 14, 0.55), 0 4px 22px rgba(15, 20, 14, 0.5);
 }
-.hero h1 {
-  color: var(--crema-neblina);
-  margin-top: 0.2rem;
-  text-shadow: 0 2px 4px rgba(15, 20, 14, 0.6), 0 6px 32px rgba(15, 20, 14, 0.55);
-}
-.hero .kicker--on-dark { text-shadow: 0 1px 3px rgba(15, 20, 14, 0.6), 0 2px 14px rgba(15, 20, 14, 0.55); }
+.hero h1 { color: var(--crema-neblina); margin-top: 0.2rem; }
 .hero-ctas {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 2.1rem;
 }
+.hero-media {
+  position: relative;
+  max-width: 460px;
+  margin-inline: auto;
+}
+@media (min-width: 1024px) { .hero-media { max-width: none; margin-inline: 0; } }
 
 .scroll-cue {
-  position: absolute;
-  bottom: clamp(1.25rem, 3vh, 2rem);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
+  position: relative;
+  display: block;
+  margin: clamp(2.5rem, 6vh, 3.5rem) auto 0;
   width: 26px; height: 42px;
   border: 1.5px solid rgba(var(--crema-neblina-rgb), 0.6);
   border-radius: 999px;
@@ -529,6 +504,7 @@ body.menu-open { overflow: hidden; }
 .split-media { position: relative; }
 .split-media img {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: var(--radius-lg);
@@ -573,6 +549,7 @@ body.menu-open { overflow: hidden; }
 }
 .story-media-frame img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
 }
@@ -606,7 +583,20 @@ body.menu-open { overflow: hidden; }
 @media (min-width: 1024px) {
   .story-inset { width: 46%; right: -8%; bottom: -10%; }
 }
-.story-inset img { aspect-ratio: 1 / 1; object-fit: cover; }
+.story-inset img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
+
+/* Hero reuses the story-media-frame/story-inset pattern but with its
+   own aspect ratio (matches the source photo's native 4:3, so no crop
+   decisions are needed at any breakpoint — this is the fix for the
+   mobile hero: no more full-bleed cover crop at all). Explicit
+   height:auto is required alongside aspect-ratio here: the <img>'s
+   width/height HTML attributes (used to reserve space and avoid CLS)
+   otherwise pin the box to the image's raw natural height, which wins
+   over aspect-ratio once both width and height resolve to definite
+   values — silently defeating the intended ratio. */
+.hero-media-frame,
+.hero-media-frame img { aspect-ratio: 4 / 3; }
+.hero-media-frame img { width: 100%; height: auto; }
 
 .specs-list {
   display: grid;
@@ -929,6 +919,5 @@ body.menu-open { overflow: hidden; }
     scroll-behavior: auto !important;
   }
   [data-reveal] { opacity: 1; transform: none; }
-  .hero-media img { transform: none; }
   .story-media { position: static; }
 }

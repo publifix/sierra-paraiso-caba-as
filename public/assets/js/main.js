@@ -133,34 +133,6 @@
   }
 
   /* ---------------------------------------------------------
-     Subtle hero parallax (transform only, capped, disabled on
-     reduced motion). Max ~15% speed differential.
-  --------------------------------------------------------- */
-  const heroImg = document.querySelector(".hero-media img");
-  if (heroImg && !reduceMotion) {
-    let heroTicking = false;
-    const updateParallax = () => {
-      const y = window.scrollY;
-      const heroH = document.querySelector(".hero")?.offsetHeight || 800;
-      if (y < heroH) {
-        const shift = Math.min(y * 0.15, 90);
-        heroImg.style.transform = `translateY(${shift}px) scale(1.08)`;
-      }
-      heroTicking = false;
-    };
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!heroTicking) {
-          requestAnimationFrame(updateParallax);
-          heroTicking = true;
-        }
-      },
-      { passive: true }
-    );
-  }
-
-  /* ---------------------------------------------------------
      Gallery lightbox
   --------------------------------------------------------- */
   const lightbox = document.getElementById("lightbox");
