@@ -437,6 +437,11 @@ body.menu-open { overflow: hidden; }
   transform: scale(1.08);
   will-change: transform;
 }
+@media (max-width: 767px) {
+  /* The mobile crop is pool-left / cabins-right; bias toward the pool
+     instead of the centered crop the wide desktop photo needs. */
+  .hero-media img { object-position: 22% center; }
+}
 .hero-scrim {
   position: absolute; inset: 0;
   background: linear-gradient(180deg,
